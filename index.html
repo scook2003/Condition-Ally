@@ -75,6 +75,50 @@
     margin: 0;
   }
 
+  .no-cost-note {
+    font-size: 14px;
+    color: var(--teal-deep);
+    background: rgba(47, 111, 98, 0.08);
+    border: 1px solid rgba(47, 111, 98, 0.25);
+    border-radius: 10px;
+    padding: 10px 16px;
+    max-width: fit-content;
+    margin: 16px 0 0;
+  }
+
+  .how-it-works {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 28px 0 40px;
+  }
+
+  .step-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .step-mini-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .step-mini p {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
   .card {
     background: var(--card);
     border: 1px solid var(--line);
@@ -536,7 +580,23 @@
     <span class="eyebrow">ConditionAlly</span>
     <h1>An <em>ally</em> for your condition.</h1>
     <p class="lede">Choose your condition below. You'll see simple, practical suggestions — no technical knowledge needed. You can also try it out for yourself, like uploading a photo of a food label or asking a quick question.</p>
+    <p class="no-cost-note">💛 No cost to you. No advertising. No revenue. This is technology for good — from me to you.</p>
   </header>
+
+  <div class="how-it-works">
+    <div class="step-mini">
+      <span class="step-mini-icon">👉</span>
+      <p>Choose your condition below</p>
+    </div>
+    <div class="step-mini">
+      <span class="step-mini-icon">💡</span>
+      <p>Read simple tips made for you</p>
+    </div>
+    <div class="step-mini">
+      <span class="step-mini-icon">📸</span>
+      <p>Try it — take a photo or ask a question</p>
+    </div>
+  </div>
 
   <div class="card">
     <div class="step">
