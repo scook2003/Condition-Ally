@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConditionAlly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F2EA;
+    --card: #FFFFFF;
+    --ink: #20302A;
+    --ink-soft: #55655E;
+    --teal: #2F6F62;
+    --teal-deep: #1F4E44;
+    --gold: #C08A2E;
+    --line: #DCD4C2;
+    --danger: #B5482F;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header.hero {
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--teal-deep);
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+
+  .step {
+    margin-bottom: 28px;
+  }
+
+  .step-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-label .num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  select, input[type="text"] {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    appearance: none;
+  }
+
+  select:focus, input[type="text"]:focus, button:focus-visible, .upload-zone:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .row > * { flex: 1; min-width: 180px; }
+
+  .hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  .fuzzy-notice {
+    font-style: italic;
+    color: var(--teal-deep);
+    margin-top: -12px;
+  }
+  .fuzzy-notice[hidden] { display: none; }
+
+  #suggestions, #demo, #askSection { display: none; }
+  #suggestions.show, #demo.show, #askSection.show { display: block; }
+
+  .condition-banner {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin: 0 0 20px;
+  }
+
+  .condition-banner .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: var(--teal);
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+  }
+
+  .idea-card {
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--paper);
+  }
+
+  .idea-card .icon {
+    font-size: 20px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .idea-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .idea-card p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .subheading {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 26px 0 14px;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+  }
+
+  .tech-card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: var(--card);
+  }
+
+  .tech-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    margin: 0 0 5px;
+    font-weight: 600;
+  }
+
+  .tech-card p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .idea-card, .tech-card {
+    transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .idea-card:hover, .tech-card:hover {
+    border-color: var(--teal);
+  }
+
+  .idea-card:has(.card-link:hover) h3,
+  .tech-card:has(.card-link:hover) h3 {
+    text-decoration: underline;
+    text-decoration-color: var(--teal);
+  }
+
+  .avoid-list a.card-link {
+    display: block;
+  }
+
+  .avoid-list li:hover {
+    background: #F5E3DC;
+  }
+
+  .avoid-list li:has(.card-link:hover) {
+    text-decoration: underline;
+    text-decoration-color: var(--danger);
+  }
+
+  .idea-card, .tech-card {
+    padding: 0;
+  }
+
+  .idea-card .card-link, .tech-card .card-link {
+    padding: 16px 18px;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(32, 48, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+
+  .modal-overlay[hidden] { display: none; }
+
+  .modal-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 460px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+
+  .modal-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin: 0 20px 14px 0;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .modal-close:hover { color: var(--ink); }
+
+  #modalBody {
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 40px;
+  }
+
+  #modalBody .hint { color: var(--ink-soft); }
+
+  .modal-search-link {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--teal-deep);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .modal-search-link:hover { text-decoration: underline; }
+
+  .avoid-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .avoid-list li {
+    position: relative;
+    padding: 10px 14px 10px 34px;
+    background: #FBF0EC;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .avoid-list li::before {
+    content: '⚠';
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    color: var(--danger);
+    font-size: 14px;
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    background: var(--paper);
+  }
+
+  .upload-zone:hover, .upload-zone.drag {
+    border-color: var(--teal);
+    background: #F0F5F3;
+  }
+
+  .upload-zone p { margin: 4px 0; color: var(--ink-soft); font-size: 14px; }
+  .upload-zone .big { font-size: 15px; color: var(--ink); font-weight: 500; }
+
+  .preview-wrap {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .preview-wrap img {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    object-fit: cover;
+  }
+
+  button.primary {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  button.primary:hover:not(:disabled) { background: var(--teal-deep); }
+  button.primary:active:not(:disabled) { transform: scale(0.98); }
+  button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  button.ghost {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .result {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--paper);
+    border-left: 3px solid var(--teal);
+    border-radius: 8px;
+    font-size: 15px;
+    white-space: pre-wrap;
+  }
+
+  .result.error {
+    border-left-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 8px;
+    vertical-align: -2px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; }
+    button.primary { transition: none; }
+  }
+
+  footer.disclaimer {
+    margin-top: 36px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  footer.disclaimer strong { color: var(--ink); }
+
+  footer.credit {
+    margin-top: 20px;
+    padding-top: 0;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  footer.credit strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .credit-dot {
+    color: var(--line);
+  }
+
+  .credit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--teal-deep);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .credit-link:hover { text-decoration: underline; }
+
+  .credit-link svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  .hashtag-pill {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--teal-deep);
+    background: rgba(47, 111, 98, 0.08);
+    border: 1px solid var(--teal-deep);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  @media (max-width: 480px) {
+    footer.credit { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hero">
+    <span class="eyebrow">ConditionAlly</span>
+    <h1>An <em>ally</em> for your condition.</h1>
+    <p class="lede">Choose your condition below. You'll see simple, practical suggestions — no technical knowledge needed. You can also try it out for yourself, like uploading a photo of a food label or asking a quick question.</p>
+  </header>
+
+  <div class="card">
+    <div class="step">
+      <div class="step-label"><span class="num">1</span> Choose a condition</div>
+      <div class="row">
+        <select id="conditionSelect">
+          <option value="">Select one…</option>
+        </select>
+        <input type="text" id="customCondition" placeholder="Or type your own…" />
+      </div>
+      <p class="hint">This shortlist is a starting point, not a diagnosis or treatment plan.</p>
+    </div>
+
+    <section id="suggestions">
+      <p class="condition-banner">Ways AI can help with <span id="conditionName"></span><span class="tag">suggestions</span></p>
+      <p class="hint fuzzy-notice" id="fuzzyNotice" hidden></p>
+      <div class="idea-grid" id="ideaGrid"></div>
+
+      <p class="subheading">Assistive technology worth exploring</p>
+      <div class="tech-grid" id="assistiveGrid"></div>
+
+      <p class="subheading avoid-heading">Good to avoid or watch out for</p>
+      <ul class="avoid-list" id="avoidGrid"></ul>
+    </section>
+
+    <section id="demo" style="margin-top:32px;">
+      <div class="step-label"><span class="num">2</span> Try it live</div>
+      <p class="hint" id="demoHint" style="margin-top:-4px; margin-bottom:16px;"></p>
+
+      <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload a photo">
+        <p class="big">📷 Click to upload a photo</p>
+        <p>a menu, food label, ingredient list — whatever's relevant</p>
+        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      </div>
+
+      <div id="previewArea" style="display:none; margin-top:18px;">
+        <div class="preview-wrap">
+          <img id="previewImg" alt="Uploaded preview">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="primary" id="analyzeBtn">Analyze photo</button>
+            <button class="ghost" id="clearBtn">Choose a different photo</button>
+          </div>
+        </div>
+        <div id="resultBox"></div>
+      </div>
+    </section>
+
+    <section id="askSection" style="margin-top:32px;">
+      <div class="step-label"><span class="num">3</span> Ask a question</div>
+      <p class="hint" style="margin-top:-4px; margin-bottom:16px;">Ask anything about living with your condition — diet, routines, appointments, and so on. Off-topic questions will be politely declined.</p>
+      <div class="row">
+        <input type="text" id="questionInput" placeholder="e.g. What should I ask my doctor at my next check-up?" maxlength="500" />
+        <button class="primary" id="askBtn" style="flex: 0 0 auto;">Ask</button>
+      </div>
+      <div id="askResultBox"></div>
+    </section>
+  </div>
+
+  <footer class="disclaimer">
+    <strong>Not medical advice.</strong> This tool suggests general, everyday ways AI assistants can support someone managing a condition (reading labels, describing scenes, organizing reminders, and similar tasks). It does not diagnose, treat, or replace guidance from a doctor, dietitian, or pharmacist. Always check with a qualified professional for decisions about your health.
+  </footer>
+
+  <footer class="credit">
+    <span>Built by <strong>Simon E. Cook</strong></span>
+    <span class="credit-dot">·</span>
+    <a href="https://www.linkedin.com/in/scook19/" target="_blank" rel="noopener noreferrer" class="credit-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <span class="credit-dot">·</span>
+    <span class="hashtag-pill">#TechForGood</span>
+  </footer>
+
+</div>
+
+<div class="modal-overlay" id="detailModal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <a id="modalSearchLink" class="modal-search-link" target="_blank" rel="noopener noreferrer">Search the web for more →</a>
+  </div>
+</div>
+
+<script>
+const conditions = [
+  { id: 'diabetes', label: 'Diabetes (Type 1 or 2)', icon: '🩸',
+    keywords: ['diabetes', 'diabetic', 'blood sugar', 'glucose', 'insulin'],
+    ideas: [
+      { icon: '🍽️', title: 'Menu scanning', desc: 'Photograph a restaurant menu and get lower-glycemic picks flagged before you order.' },
+      { icon: '🏷️', title: 'Label reading', desc: 'Snap a nutrition label to get carb counts translated into plain language.' },
+      { icon: '📈', title: 'Pattern spotting', desc: 'Describe your meals and glucose readings in a chat to notice patterns worth mentioning to your doctor.' },
+      { icon: '⏰', title: 'Reminders', desc: 'Ask a voice assistant to set recurring reminders for testing or medication times.' }
+    ],
+    assistiveTech: [
+      { name: 'Continuous glucose monitors', desc: 'Devices like Dexcom or FreeStyle Libre track glucose automatically and pair with a phone app.' },
+      { name: 'Smart insulin pens', desc: 'Log doses automatically and flag missed or doubled-up doses.' },
+      { name: 'Diabetes logging apps', desc: 'Apps like mySugr combine food, glucose, and medication logs in one place.' }
+    ],
+    avoid: [
+      'Sugary drinks and juices, which spike blood sugar quickly',
+      'Large portions of refined white bread, rice, or pasta',
+      'Skipping meals after taking insulin or other glucose-lowering medication'
+    ],
+    demoHint: 'Try uploading a restaurant menu or a nutrition label photo.'
+  },
+  { id: 'hypertension', label: 'High blood pressure', icon: '❤️',
+    keywords: ['blood pressure', 'hypertension', 'high bp'],
+    ideas: [
+      { icon: '🧂', title: 'Sodium check', desc: 'Photograph a label or menu to flag high-sodium items at a glance.' },
+      { icon: '📋', title: 'Reading trends', desc: 'Log home BP readings in a chat and ask for a plain-language summary to bring to appointments.' },
+      { icon: '🏃', title: 'Activity ideas', desc: 'Ask for gentle exercise suggestions appropriate for your fitness level.' },
+      { icon: '💊', title: 'Medication questions', desc: 'Draft questions in advance for your pharmacist about timing or interactions.' }
+    ],
+    assistiveTech: [
+      { name: 'Bluetooth blood pressure monitors', desc: 'Cuffs like Omron\'s connected models sync readings straight to a phone app.' },
+      { name: 'Medication reminder apps', desc: 'Apps like Medisafe send alerts and track adherence over time.' }
+    ],
+    avoid: [
+      'High-sodium processed, canned, or fast food',
+      'Excess alcohol',
+      'Adding table salt without checking a label first'
+    ],
+    demoHint: 'Try uploading a food label or restaurant menu — sodium content is what we\'ll look for.'
+  },
+  { id: 'celiac', label: 'Celiac disease / gluten sensitivity', icon: '🌾',
+    keywords: ['celiac', 'coeliac', 'gluten'],
+    ideas: [
+      { icon: '🔍', title: 'Ingredient check', desc: 'Photograph an ingredient list to flag likely gluten-containing items and hidden sources.' },
+      { icon: '🍽️', title: 'Menu triage', desc: 'Scan a menu for dishes worth asking the kitchen about versus safer bets.' },
+      { icon: '🗺️', title: 'Travel prep', desc: 'Get a translated card of key phrases ("no wheat, barley, rye") for travel abroad.' },
+      { icon: '🛒', title: 'Grocery lists', desc: 'Build a gluten-free swap list for a recipe you want to keep making.' }
+    ],
+    assistiveTech: [
+      { name: 'Find Me Gluten Free', desc: 'An app for locating and reviewing gluten-free-friendly restaurants nearby.' },
+      { name: 'Ingredient scanner apps', desc: 'Apps like Fig scan barcodes and flag ingredients against your restrictions.' }
+    ],
+    avoid: [
+      'Wheat, barley, and rye — including hidden sources like soy sauce and sauces',
+      'Shared fryers, toasters, or cutting boards used with gluten-containing food',
+      'Products labeled "wheat-free" — that\'s not the same as gluten-free'
+    ],
+    demoHint: 'Try uploading a menu or an ingredient label.'
+  },
+  { id: 'allergies', label: 'Food allergies', icon: '🥜',
+    keywords: ['allergy', 'allergies', 'allergic', 'peanut', 'shellfish', 'anaphylaxis'],
+    ideas: [
+      { icon: '⚠️', title: 'Allergen flagging', desc: 'Photograph a label or menu and flag your specific allergens plus likely cross-contact risks.' },
+      { icon: '🗣️', title: 'Phrasing help', desc: 'Get a clear, polite script for explaining your allergy to kitchen staff.' },
+      { icon: '🧳', title: 'Travel cards', desc: 'Generate an allergy card translated into the local language for travel.' },
+      { icon: '📦', title: 'Substitutions', desc: 'Ask for safe substitutes for an allergen in a recipe you love.' }
+    ],
+    assistiveTech: [
+      { name: 'Ingredient scanner apps', desc: 'Apps like Fig scan barcodes and flag your specific allergens instantly.' },
+      { name: 'Medical ID wearables', desc: 'Bracelets or phone lock-screen medical IDs that alert others in an emergency.' }
+    ],
+    avoid: [
+      'Your specific allergen — including hidden sources in sauces, baked goods, or dressings',
+      'Shared kitchen equipment that risks cross-contact',
+      'Leaving home without your emergency medication (e.g. an epinephrine auto-injector), if prescribed'
+    ],
+    demoHint: 'Try uploading a menu or ingredient label — tell the analyzer your specific allergen.'
+  },
+  { id: 'lowvision', label: 'Low vision / blindness', icon: '🦯',
+    keywords: ['blind', 'blindness', 'low vision', 'vision loss', 'visually impaired', 'visual impairment'],
+    ideas: [
+      { icon: '🖼️', title: 'Scene description', desc: 'Photograph anything — a menu, a room, mail — and get a spoken description of what\'s in it.' },
+      { icon: '🚏', title: 'Sign & label reading', desc: 'Read street signs, packaging, or printed mail aloud via photo.' },
+      { icon: '🧭', title: 'Navigation help', desc: 'Ask for step-by-step verbal directions in unfamiliar spaces.' },
+      { icon: '📞', title: 'Form filling', desc: 'Have a form or letter read aloud and explained before you sign it.' }
+    ],
+    assistiveTech: [
+      { name: 'Screen readers', desc: 'Built-in tools like VoiceOver (Apple), TalkBack (Android), JAWS, and NVDA read screens aloud.' },
+      { name: 'Seeing AI', desc: 'A free Microsoft app that narrates text, objects, and people from the camera in real time.' },
+      { name: 'Be My Eyes', desc: 'Video-calls a sighted volunteer (or an AI assistant) to describe what\'s in front of you.' },
+      { name: 'OrCam MyEye', desc: 'A small wearable device that reads text and recognizes faces or products aloud.' }
+    ],
+    avoid: [
+      'Cluttered walkways, loose rugs, or furniture left in unusual places at home',
+      'Relying on color alone to tell apart medication bottles or packaging',
+      'Poorly lit stairwells or entryways'
+    ],
+    demoHint: 'Try uploading any photo — a menu, a letter, a room — and get it described.'
+  },
+  { id: 'mobility', label: 'Limited mobility', icon: '🦽',
+    keywords: ['wheelchair', 'mobility', 'paralysis', 'paraplegic', 'quadriplegic', 'limited mobility'],
+    ideas: [
+      { icon: '🏢', title: 'Accessibility scouting', desc: 'Ask about step-free entrances, elevators, or accessible restrooms at a venue before you go.' },
+      { icon: '📝', title: 'Task breakdown', desc: 'Break a chore into smaller, lower-strain steps.' },
+      { icon: '🛍️', title: 'Delivery planning', desc: 'Draft grocery or pharmacy orders for delivery instead of an in-person trip.' },
+      { icon: '💬', title: 'Advocacy scripts', desc: 'Get help wording an accommodation request for work or travel.' }
+    ],
+    assistiveTech: [
+      { name: 'AccessNow', desc: 'A crowdsourced map app rating the accessibility of nearby places.' },
+      { name: 'Smart home voice assistants', desc: 'Alexa or Google Home let you control lights, locks, and thermostats hands-free.' },
+      { name: 'Voiceitt', desc: 'Speech-recognition software trained to understand atypical or unclear speech.' }
+    ],
+    avoid: [
+      'Loose rugs, trailing cords, or clutter that raise fall risk',
+      'Pushing through overexertion without scheduled rest breaks',
+      'Uneven, wet, or icy surfaces without appropriate support'
+    ],
+    demoHint: 'Try uploading a photo of a venue entrance or floor plan for an accessibility read.'
+  },
+  { id: 'heart', label: 'Heart disease', icon: '🫀',
+    keywords: ['heart disease', 'cardiac', 'heart attack', 'heart failure'],
+    ideas: [
+      { icon: '🍽️', title: 'Heart-healthy menu picks', desc: 'Scan a menu for lower-sodium, lower-saturated-fat options.' },
+      { icon: '🏷️', title: 'Label translation', desc: 'Turn a nutrition label into plain terms for sodium, fat, and cholesterol.' },
+      { icon: '🚶', title: 'Activity pacing', desc: 'Ask for gentle activity ideas appropriate to your recovery stage (with your care team\'s sign-off).' },
+      { icon: '📅', title: 'Appointment prep', desc: 'Draft a list of symptoms or questions before a cardiology visit.' }
+    ],
+    assistiveTech: [
+      { name: 'Wearable heart monitors', desc: 'Devices like the Apple Watch or Fitbit can flag irregular heart rhythms.' },
+      { name: 'Bluetooth BP and weight scales', desc: 'Sync readings automatically so trends are easy to share with your care team.' }
+    ],
+    avoid: [
+      'High-sodium and fried foods',
+      'Trans fats and heavily processed snacks',
+      'Excess alcohol or stimulants without checking with your doctor first'
+    ],
+    demoHint: 'Try uploading a restaurant menu or a nutrition label.'
+  },
+  { id: 'kidney', label: 'Kidney disease', icon: '🫘',
+    keywords: ['kidney', 'renal', 'dialysis', 'nephropathy'],
+    ideas: [
+      { icon: '🧪', title: 'Label check', desc: 'Photograph a label to flag potassium, phosphorus, and sodium content.' },
+      { icon: '🍽️', title: 'Menu triage', desc: 'Scan a menu for dishes more in line with a renal diet.' },
+      { icon: '💧', title: 'Fluid tracking', desc: 'Log daily fluid intake in a chat and get a running plain-language total.' },
+      { icon: '📅', title: 'Appointment prep', desc: 'Organize questions for your nephrologist or dietitian ahead of a visit.' }
+    ],
+    assistiveTech: [
+      { name: 'Fluid and diet tracking apps', desc: 'Apps built for renal diets help track potassium, phosphorus, and fluid intake.' },
+      { name: 'Medication reminder apps', desc: 'Useful for keeping complex dialysis-related medication schedules on track.' }
+    ],
+    avoid: [
+      'High-potassium foods like bananas and oranges, if your care team has advised limiting them',
+      'High-phosphorus items like dark colas and processed cheese',
+      'Over-the-counter NSAIDs (like ibuprofen) without checking with your doctor'
+    ],
+    demoHint: 'Try uploading a nutrition label or menu.'
+  },
+  { id: 'anxiety', label: 'Anxiety / mental health', icon: '🧠',
+    keywords: ['anxiety', 'depression', 'mental health', 'panic attack', 'ptsd'],
+    ideas: [
+      { icon: '📝', title: 'Thought organizing', desc: 'Talk through a worry in writing to help untangle it before a big decision.' },
+      { icon: '🗓️', title: 'Routine building', desc: 'Get help designing a simple daily structure on low-motivation days.' },
+      { icon: '💬', title: 'Script practice', desc: 'Rehearse a hard conversation (asking for help, setting a boundary) beforehand.' },
+      { icon: '🌬️', title: 'Grounding prompts', desc: 'Ask for a short grounding exercise when things feel overwhelming.' }
+    ],
+    assistiveTech: [
+      { name: 'Guided meditation apps', desc: 'Apps like Calm or Headspace offer structured breathing and grounding exercises.' },
+      { name: 'Mood tracking apps', desc: 'Simple daily check-ins that reveal patterns worth discussing with a therapist.' }
+    ],
+    avoid: [
+      'Excess caffeine, which can heighten physical anxiety symptoms',
+      'Doom-scrolling news or social media right before bed',
+      'Complete isolation instead of light, low-pressure social contact'
+    ],
+    demoHint: 'This condition doesn\'t suit a photo demo as well — try the ideas above directly in a chat with Claude.'
+  },
+  { id: 'ibs', label: 'IBS / Crohn\'s / IBD', icon: '🫃',
+    keywords: ['ibs', 'crohn', 'colitis', 'ibd', 'irritable bowel'],
+    ideas: [
+      { icon: '🍽️', title: 'Menu triage', desc: 'Scan a menu for dishes less likely to trigger your specific sensitivities.' },
+      { icon: '📓', title: 'Symptom-food logging', desc: 'Log meals and symptoms in a chat and ask for patterns to raise with your GI doctor.' },
+      { icon: '🛒', title: 'Label check', desc: 'Photograph a label to flag common trigger ingredients (like specific FODMAPs).' },
+      { icon: '🧳', title: 'Travel prep', desc: 'Plan bathroom-friendly routes or safe food options ahead of a trip.' }
+    ],
+    assistiveTech: [
+      { name: 'Monash University FODMAP app', desc: 'A widely used reference for identifying high- and low-FODMAP foods.' },
+      { name: 'Symptom tracker apps', desc: 'Apps like Cara Care log meals and symptoms together to spot patterns.' }
+    ],
+    avoid: [
+      'Acidic drinks like coffee, citrus juice, and soda — common triggers',
+      'High-fat fried foods',
+      'Carbonated drinks and artificial sweeteners like sorbitol'
+    ],
+    demoHint: 'Try uploading a menu or ingredient label.'
+  },
+  { id: 'prostatitis', label: 'Prostatitis / urological conditions', icon: '🚻',
+    keywords: ['prostatitis', 'prostate', 'urology', 'urological', 'bladder', 'uti', 'urinary'],
+    ideas: [
+      { icon: '🍽️', title: 'Menu triage', desc: 'Scan a menu for known bladder irritants — caffeine, alcohol, spicy or acidic ingredients.' },
+      { icon: '📓', title: 'Symptom logging', desc: 'Log flare-ups and possible triggers in a chat to spot patterns worth mentioning to your urologist.' },
+      { icon: '💧', title: 'Hydration reminders', desc: 'Ask a voice assistant to set gentle reminders to drink water throughout the day.' },
+      { icon: '📅', title: 'Appointment prep', desc: 'Draft a list of symptoms and questions ahead of a urology visit.' }
+    ],
+    assistiveTech: [
+      { name: 'Bladder diary apps', desc: 'Apps that log fluid intake, urgency, and symptoms to share with your care team.' },
+      { name: 'Hydration tracking apps', desc: 'Simple reminders and logs to keep fluid intake steady through the day.' }
+    ],
+    avoid: [
+      'Acidic drinks like coffee, citrus juice, and soda, which can irritate symptoms',
+      'Alcohol and spicy foods',
+      'Going long stretches without urinating or without adequate hydration'
+    ],
+    demoHint: 'Try uploading a menu — we\'ll flag common bladder irritants like caffeine, alcohol, and acidic ingredients.'
+  },
+  { id: 'arthritis', label: 'Arthritis', icon: '🦴',
+    keywords: ['arthritis', 'rheumatoid', 'osteoarthritis', 'joint pain'],
+    ideas: [
+      { icon: '📝', title: 'Task breakdown', desc: 'Break tasks needing grip or fine motor control into smaller, easier steps.' },
+      { icon: '🎙️', title: 'Hands-free control', desc: 'Use a voice assistant for texting, reminders, or opening apps when hands hurt.' },
+      { icon: '📈', title: 'Flare tracking', desc: 'Log flare-ups, weather, and activity in a chat to spot patterns worth mentioning to your rheumatologist.' },
+      { icon: '📅', title: 'Appointment prep', desc: 'Draft a list of symptoms and questions before a rheumatology visit.' }
+    ],
+    assistiveTech: [
+      { name: 'Dictation / speech-to-text', desc: 'Built-in tools like voice typing reduce strain from typing during a flare.' },
+      { name: 'Smart pill organizers', desc: 'Automated dispensers that sort and remind, useful when opening bottles is painful.' },
+      { name: 'Voice assistants', desc: 'Alexa or Google Home handle hands-free reminders, calls, and smart home control.' }
+    ],
+    avoid: [
+      'Pushing through pain during a flare instead of pacing activity',
+      'Gripping jars, tools, or utensils without ergonomic aids when joints are swollen',
+      'Highly processed and fried foods some people find worsen flares'
+    ],
+    demoHint: 'This condition doesn\'t suit a photo demo as well — try the ideas above, or describe a task you\'re struggling with in a chat.'
+  },
+];
+
+const genericAssistiveTech = [
+  { name: 'Medication reminder apps', desc: 'Apps like Medisafe track doses and send alerts so nothing gets missed.' },
+  { name: 'Symptom or routine tracking apps', desc: 'General-purpose logging apps can reveal patterns worth discussing with a professional.' },
+  { name: 'Telehealth apps', desc: 'Many providers now offer video visits, reducing the need for in-person trips for routine check-ins.' }
+];
+
+const genericAvoid = [
+  'Making major diet or medication changes without checking with your doctor first',
+  'Skipping follow-up appointments even when symptoms improve',
+  'Relying on a single source for health information instead of your care team'
+];
+
+function findConditionMatch(text) {
+  const lower = text.toLowerCase();
+  return conditions.find(c => c.keywords.some(kw => lower.includes(kw)));
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function fuzzyThreshold(len) {
+  if (len <= 4) return 1;
+  if (len <= 7) return 2;
+  return 3;
+}
+
+// Finds the closest known condition when no exact substring match is found —
+// catches typos like "diabetis" or "blindess".
+function findFuzzyConditionMatch(text) {
+  const lower = text.toLowerCase().trim();
+  if (lower.length < 3) return null;
+
+  let best = null;
+  let bestDistance = Infinity;
+
+  conditions.forEach(c => {
+    const candidates = [...c.keywords, c.label.toLowerCase()];
+    candidates.forEach(candidate => {
+      const dist = levenshtein(lower, candidate);
+      const threshold = fuzzyThreshold(candidate.length);
+      if (dist > 0 && dist <= threshold && dist < bestDistance) {
+        bestDistance = dist;
+        best = c;
+      }
+    });
+  });
+
+  return best;
+}
+
+const select = document.getElementById('conditionSelect');
+const customInput = document.getElementById('customCondition');
+const suggestions = document.getElementById('suggestions');
+const conditionName = document.getElementById('conditionName');
+const ideaGrid = document.getElementById('ideaGrid');
+const assistiveGrid = document.getElementById('assistiveGrid');
+const avoidGrid = document.getElementById('avoidGrid');
+const demo = document.getElementById('demo');
+const demoHint = document.getElementById('demoHint');
+const askSection = document.getElementById('askSection');
+const fuzzyNotice = document.getElementById('fuzzyNotice');
+
+conditions.forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c.id;
+  opt.textContent = `${c.icon} ${c.label}`;
+  select.appendChild(opt);
+});
+
+let currentLabel = '';
+let currentDemoHint = 'Upload any relevant photo and we\'ll tailor suggestions to your condition.';
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function searchUrl(query) {
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
+function renderCondition(cond, customLabel, dynamic) {
+  const label = customLabel || cond.label;
+  currentLabel = label;
+  conditionName.textContent = label;
+  fuzzyNotice.hidden = true;
+  ideaGrid.innerHTML = '';
+
+  const ideas = dynamic ? dynamic.ideas : (cond ? cond.ideas : [
+    { icon: '📷', title: 'Photo analysis', desc: 'Upload something relevant (a label, a menu, a form) and ask what to look out for.' },
+    { icon: '📝', title: 'Plain-language help', desc: 'Ask for medical or bureaucratic text to be explained simply.' },
+    { icon: '🗓️', title: 'Reminders & tracking', desc: 'Log symptoms or routines in a chat and ask for a plain summary.' },
+    { icon: '💬', title: 'Conversation prep', desc: 'Draft questions ahead of an appointment.' }
+  ]);
+
+  ideas.forEach(idea => {
+    const div = document.createElement('div');
+    div.className = 'idea-card';
+    const url = searchUrl(`${idea.title} ${label}`);
+    div.innerHTML = `<a class="card-link" href="${url}" target="_blank" rel="noopener noreferrer"><span class="icon">${escapeHtml(idea.icon)}</span><h3>${escapeHtml(idea.title)}</h3><p>${escapeHtml(idea.desc)}</p></a>`;
+    div.querySelector('a').addEventListener('click', e => {
+      e.preventDefault();
+      openDetailModal(idea.title, `${idea.title} ${label}`, label);
+    });
+    ideaGrid.appendChild(div);
+  });
+
+  const techList = dynamic ? dynamic.assistiveTech : (cond ? cond.assistiveTech : genericAssistiveTech);
+  assistiveGrid.innerHTML = '';
+  techList.forEach(tech => {
+    const div = document.createElement('div');
+    div.className = 'tech-card';
+    const url = searchUrl(tech.name);
+    div.innerHTML = `<a class="card-link" href="${url}" target="_blank" rel="noopener noreferrer"><h3>${escapeHtml(tech.name)}</h3><p>${escapeHtml(tech.desc)}</p></a>`;
+    div.querySelector('a').addEventListener('click', e => {
+      e.preventDefault();
+      openDetailModal(tech.name, tech.name, label);
+    });
+    assistiveGrid.appendChild(div);
+  });
+
+  const avoidList = dynamic ? dynamic.avoid : (cond ? cond.avoid : genericAvoid);
+  avoidGrid.innerHTML = '';
+  avoidList.forEach(item => {
+    const li = document.createElement('li');
+    const url = searchUrl(`${item} ${label}`);
+    li.innerHTML = `<a class="card-link avoid-link" href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(item)}</a>`;
+    li.querySelector('a').addEventListener('click', e => {
+      e.preventDefault();
+      openDetailModal(item, `${item} ${label}`, label);
+    });
+    avoidGrid.appendChild(li);
+  });
+
+  currentDemoHint = dynamic ? dynamic.demoHint : (cond ? cond.demoHint : 'Upload any relevant photo — a label, a menu, a form — and we\'ll tailor suggestions to what you tell us about your condition.');
+  demoHint.textContent = currentDemoHint;
+
+  suggestions.classList.add('show');
+  demo.classList.add('show');
+  askSection.classList.add('show');
+}
+
+function showLoadingState(label) {
+  conditionName.textContent = label;
+  fuzzyNotice.hidden = true;
+  ideaGrid.innerHTML = '<p class="hint">Thinking of suggestions for this one — one moment…</p>';
+  assistiveGrid.innerHTML = '';
+  avoidGrid.innerHTML = '';
+  suggestions.classList.add('show');
+  demo.classList.remove('show');
+  askSection.classList.remove('show');
+}
+
+select.addEventListener('change', () => {
+  if (!select.value) return;
+  customInput.value = '';
+  const cond = conditions.find(c => c.id === select.value);
+  renderCondition(cond, null);
+});
+
+let debounceTimer = null;
+const dynamicCache = new Map();
+
+customInput.addEventListener('input', () => {
+  const typed = customInput.value.trim();
+  if (!typed) return;
+  select.value = '';
+  clearTimeout(debounceTimer);
+
+  const match = findConditionMatch(typed);
+  if (match) {
+    renderCondition(match, typed);
+    return;
+  }
+
+  const fuzzyMatch = findFuzzyConditionMatch(typed);
+  if (fuzzyMatch) {
+    renderCondition(fuzzyMatch, null);
+    fuzzyNotice.hidden = false;
+    fuzzyNotice.textContent = `Assumed you meant "${fuzzyMatch.label}" — showing suggestions for that. Keep typing if you meant something else.`;
+    return;
+  }
+
+  const cached = dynamicCache.get(typed.toLowerCase());
+  if (cached) {
+    renderCondition(null, typed, cached);
+    return;
+  }
+
+  showLoadingState(typed);
+  debounceTimer = setTimeout(() => fetchDynamicSuggestions(typed), 700);
+});
+
+async function fetchDynamicSuggestions(typed) {
+  try {
+    const response = await fetch('/api/suggest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ conditionLabel: typed })
+    });
+    const data = await response.json();
+
+    // If the person kept typing, this response is stale — ignore it.
+    if (customInput.value.trim() !== typed) return;
+
+    if (!response.ok) {
+      ideaGrid.innerHTML = `<p class="hint">${data.error || 'Could not generate suggestions for that.'}</p>`;
+      assistiveGrid.innerHTML = '';
+      avoidGrid.innerHTML = '';
+      return;
+    }
+
+    dynamicCache.set(typed.toLowerCase(), data);
+    renderCondition(null, typed, data);
+  } catch (err) {
+    if (customInput.value.trim() !== typed) return;
+    ideaGrid.innerHTML = '<p class="hint">Something went wrong generating suggestions. Try again in a moment.</p>';
+  }
+}
+
+// --- Photo upload + analysis ---
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+const previewArea = document.getElementById('previewArea');
+const previewImg = document.getElementById('previewImg');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const clearBtn = document.getElementById('clearBtn');
+const resultBox = document.getElementById('resultBox');
+
+let currentFile = null;
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
+
+['dragover', 'dragenter'].forEach(evt => uploadZone.addEventListener(evt, e => {
+  e.preventDefault();
+  uploadZone.classList.add('drag');
+}));
+['dragleave', 'drop'].forEach(evt => uploadZone.addEventListener(evt, e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag');
+}));
+uploadZone.addEventListener('drop', e => {
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) handleFile(fileInput.files[0]);
+});
+
+function handleFile(file) {
+  currentFile = file;
+  const reader = new FileReader();
+  reader.onload = () => {
+    previewImg.src = reader.result;
+    previewArea.style.display = 'block';
+    resultBox.innerHTML = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+clearBtn.addEventListener('click', () => {
+  currentFile = null;
+  fileInput.value = '';
+  previewArea.style.display = 'none';
+  resultBox.innerHTML = '';
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Shrinks large photos (common on modern phone cameras) down to a size
+// that reliably fits within the server's request size limit, before sending.
+function resizeImage(file, maxDim = 1400, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = () => { img.src = reader.result; };
+    reader.onerror = reject;
+
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round(height * (maxDim / width));
+          width = maxDim;
+        } else {
+          width = Math.round(width * (maxDim / height));
+          height = maxDim;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+      resolve({ base64: dataUrl.split(',')[1], mediaType: 'image/jpeg' });
+    };
+    img.onerror = reject;
+
+    reader.readAsDataURL(file);
+  });
+}
+
+async function safeParseJson(response) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    // The server returned something that wasn't JSON — usually means the
+    // request timed out or was rejected before reaching our function.
+    throw new Error(`Server returned an unexpected response (status ${response.status}) — it may have timed out`);
+  }
+}
+
+analyzeBtn.addEventListener('click', async () => {
+  if (!currentFile) return;
+  analyzeBtn.disabled = true;
+  analyzeBtn.innerHTML = '<span class="spinner"></span>Analyzing…';
+  resultBox.innerHTML = '';
+
+  try {
+    const { base64, mediaType } = await resizeImage(currentFile);
+
+    // This calls OUR OWN server function (api/analyze.js), not Anthropic directly.
+    // The server function holds the real API key and forwards the request.
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ conditionLabel: currentLabel, mediaType, base64 })
+    });
+
+    const data = await safeParseJson(response);
+    if (!response.ok) throw new Error(data.error || `Server error (${response.status})`);
+
+    resultBox.innerHTML = `<div class="result">${data.text.replace(/</g, '&lt;')}</div>`;
+  } catch (err) {
+    resultBox.innerHTML = `<div class="result error">Something went wrong analyzing that photo: ${err.message}. Try again, or use a clearer photo.</div>`;
+  } finally {
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = 'Analyze photo';
+  }
+});
+
+// --- Ask a question ---
+const questionInput = document.getElementById('questionInput');
+const askBtn = document.getElementById('askBtn');
+const askResultBox = document.getElementById('askResultBox');
+
+async function submitQuestion() {
+  const question = questionInput.value.trim();
+  if (!question) return;
+
+  askBtn.disabled = true;
+  askBtn.innerHTML = '<span class="spinner"></span>Asking…';
+  askResultBox.innerHTML = '';
+
+  try {
+    const response = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ conditionLabel: currentLabel, question })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || `Server error (${response.status})`);
+
+    askResultBox.innerHTML = `<div class="result">${data.text.replace(/</g, '&lt;')}</div>`;
+  } catch (err) {
+    askResultBox.innerHTML = `<div class="result error">Something went wrong: ${err.message}. Please try again.</div>`;
+  } finally {
+    askBtn.disabled = false;
+    askBtn.textContent = 'Ask';
+  }
+}
+
+askBtn.addEventListener('click', submitQuestion);
+questionInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitQuestion();
+});
+
+// --- Detail modal ---
+const detailModal = document.getElementById('detailModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+const modalSearchLink = document.getElementById('modalSearchLink');
+
+const detailCache = new Map();
+let modalRequestToken = 0;
+
+async function openDetailModal(title, query, conditionLabel) {
+  modalTitle.textContent = title;
+  modalSearchLink.href = searchUrl(query);
+  detailModal.hidden = false;
+  modalClose.focus();
+
+  const cacheKey = `${title}|${conditionLabel}`;
+  const cached = detailCache.get(cacheKey);
+  if (cached) {
+    modalBody.innerHTML = `<p>${escapeHtml(cached)}</p>`;
+    return;
+  }
+
+  modalBody.innerHTML = '<p class="hint">Loading more detail…</p>';
+  const thisRequest = ++modalRequestToken;
+
+  try {
+    const response = await fetch('/api/detail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic: title, conditionLabel })
+    });
+    const data = await response.json();
+
+    if (thisRequest !== modalRequestToken) return; // modal was reopened with something else
+
+    if (!response.ok) {
+      modalBody.innerHTML = `<p class="hint">${escapeHtml(data.error || 'Could not load more detail.')}</p>`;
+      return;
+    }
+
+    detailCache.set(cacheKey, data.text);
+    modalBody.innerHTML = `<p>${escapeHtml(data.text)}</p>`;
+  } catch (err) {
+    if (thisRequest !== modalRequestToken) return;
+    modalBody.innerHTML = '<p class="hint">Something went wrong loading more detail. Try again in a moment.</p>';
+  }
+}
+
+function closeModal() {
+  detailModal.hidden = true;
+}
+
+modalClose.addEventListener('click', closeModal);
+detailModal.addEventListener('click', e => {
+  if (e.target === detailModal) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !detailModal.hidden) closeModal();
+});
+</script>
+</body>
+</html>
