@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — ConditionAlly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F2EA;
+    --card: #FFFFFF;
+    --ink: #20302A;
+    --ink-soft: #55655E;
+    --teal: #2F6F62;
+    --teal-deep: #1F4E44;
+    --gold: #C08A2E;
+    --line: #DCD4C2;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+  .back-link {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--teal-deep);
+    text-decoration: none;
+    margin-bottom: 28px;
+  }
+  .back-link:hover { text-decoration: underline; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--teal-deep);
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+  .updated {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card.highlight {
+    border-left: 3px solid var(--teal);
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+  p { margin: 0 0 12px; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+  ul { margin: 0 0 12px; padding-left: 20px; font-size: 15px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--teal-deep); }
+  .short-version {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 15px;
+  }
+  .short-version li {
+    list-style: none;
+    padding-left: 26px;
+    position: relative;
+  }
+  .short-version li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="index.html">← Back to ConditionAlly</a>
+  <span class="eyebrow">ConditionAlly</span>
+  <h1>Privacy, in plain language.</h1>
+  <p class="updated">Last updated July 2026</p>
+
+  <div class="card highlight">
+    <h2>The short version</h2>
+    <ul class="short-version">
+      <li>No accounts, no sign-up, no login</li>
+      <li>No advertising, and nothing about you is sold to anyone</li>
+      <li>No cookies or tracking of your visits to this site</li>
+      <li>What you type or upload is used only to generate your suggestions, not stored by this website</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What you share with this site</h2>
+    <p>When you use ConditionAlly, you might type a condition, ask a question, or upload a photo (like a menu or food label). This information is sent directly to Anthropic's AI service (Claude) to generate a helpful response for you.</p>
+    <p>ConditionAlly itself does not have a database. It does not save your condition, your questions, or your photos anywhere. Once your answer is shown on screen, nothing about that interaction is kept by this website.</p>
+  </div>
+
+  <div class="card">
+    <h2>Where the information goes</h2>
+    <p>To generate suggestions, ConditionAlly sends your input to Anthropic's API — the same company and technology behind Claude. This is a business/developer use of their service (not the consumer Claude.ai chat product), which has its own, generally stricter, data handling terms.</p>
+    <p>For the full, authoritative details on how Anthropic handles data sent to its API, see <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Anthropic's Privacy Policy</a>. This site can't speak on Anthropic's behalf beyond linking you to their own documentation — if you want firm guarantees about retention periods or data use, that page is the authoritative source, not this one.</p>
+  </div>
+
+  <div class="card">
+    <h2>What this site doesn't do</h2>
+    <p>No analytics trackers, no advertising pixels, no cookies used to follow you around the web, no data sold or shared with advertisers. This project was built to help people, not to monetize them.</p>
+  </div>
+
+  <div class="card">
+    <h2>Sensitive topics</h2>
+    <p>Some of what you might type here — a medical condition, a question about your health — is personal. Please still avoid uploading anything containing other people's private information (like a photo with someone else's name or details visible), since that goes to a third party (Anthropic) the same way your own input does.</p>
+  </div>
+
+  <div class="card">
+    <h2>Questions</h2>
+    <p>If you have any questions about this, you're welcome to reach out via <a href="https://www.linkedin.com/in/scook19/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
+  </div>
+
+</div>
+</body>
+</html>
