@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ConditionAlly</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTMwIDEzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkNvbmRpdGlvbkFsbHkgaWNvbiI+CiAgPHRpdGxlPkNvbmRpdGlvbkFsbHk8L3RpdGxlPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUsNSkiPgogICAgPGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJEQThBMCIgc3Ryb2tlLXdpZHRoPSI5IgogICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiCiAgICAgIHN0cm9rZS1kYXNoYXJyYXk9IjI0My40IDM5LjMiCiAgICAgIHN0cm9rZS1kYXNob2Zmc2V0PSItMTkuNjUiCiAgICAgIHRyYW5zZm9ybT0icm90YXRlKC05MCA2MCA2MCkiLz4KCiAgICA8cGF0aCBkPSJNNDEsMTkuMiBMNDgsMTkuMiBMNTIsMTEgTDU4LDI3IEw2MiwxOS4yIEw3MiwxOS4yIEw3OSwxOS4yIgogICAgICBmaWxsPSJub25lIiBzdHJva2U9IiNFOEEzM0QiIHN0cm9rZS13aWR0aD0iNiIKICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPC9nPgo8L3N2Zz4K">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -61,6 +62,13 @@
     line-height: 1.05;
     margin: 0 0 14px;
     letter-spacing: -0.01em;
+  }
+
+  .logo-mark {
+    display: block;
+    width: clamp(230px, 34vw, 340px);
+    height: auto;
+    margin: 0 0 18px;
   }
 
   h1 em {
@@ -577,8 +585,25 @@
 <div class="app">
 
   <header class="hero">
-    <span class="eyebrow">ConditionAlly</span>
-    <h1>An <em>ally</em> for your condition.</h1>
+    <svg class="logo-mark" viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ConditionAlly logo">
+      <title>ConditionAlly</title>
+      <g transform="translate(5,5)">
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#2DA8A0" stroke-width="9"
+          stroke-linecap="round"
+          stroke-dasharray="243.4 39.3"
+          stroke-dashoffset="-19.65"
+          transform="rotate(-90 60 60)"/>
+        <path d="M41,19.2 L48,19.2 L52,11 L58,27 L62,19.2 L72,19.2 L79,19.2"
+          fill="none" stroke="#E8A33D" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text x="140" y="80" font-family="'Poppins','Quicksand',sans-serif" font-size="46" font-weight="700" letter-spacing="-0.5">
+        <tspan fill="#1B4B4A">Condition</tspan><tspan fill="#E8A33D">Ally</tspan>
+      </text>
+      <text x="141" y="102" font-family="'Poppins','Quicksand',sans-serif" font-size="13" font-weight="500" letter-spacing="1.5" fill="#5B6B6A">
+        NO COST · NO ADS · AI-POWERED SUPPORT
+      </text>
+    </svg>
     <p class="lede">Choose or type in your condition below. You'll see simple, practical suggestions, no technical knowledge needed. Have a condition like diabetes or an allergy and want the best menu option? Input your condition and upload a photo of a the menu.</p>
     <p class="no-cost-note">💛 No cost to you. No advertising. No revenue. This is technology for good - from me to you.</p>
   </header>
